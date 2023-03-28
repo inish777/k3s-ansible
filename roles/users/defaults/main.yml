@@ -1,0 +1,7 @@
+keys_path: "{{ inventory_dir }}/files/ssh-keys"
+
+users: []
+
+group: 
+ # - docker
+  - sudo

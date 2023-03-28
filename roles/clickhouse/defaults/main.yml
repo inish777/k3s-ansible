@@ -1,0 +1,9 @@
+---
+# defaults file for clickhouse
+
+limits:
+  memory: "512Mi"
+  cpu: "500m"
+
+requests:
+  

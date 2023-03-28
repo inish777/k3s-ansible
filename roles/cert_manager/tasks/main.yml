@@ -1,0 +1,4 @@
+---
+# tasks file for cert_manager
+- name: Add cert-manager helm repo
+  kubernetes.core.

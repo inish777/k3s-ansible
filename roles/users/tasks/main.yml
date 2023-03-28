@@ -1,0 +1,31 @@
+# 
+
+- name: User add
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    state: "{{ item.state }}"
+  with_items: "{{ users }}"
+
+- name: Add key
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ lookup('file', '{{ keys_path }}/{{ item.name }}.pub') }}"
+  with_items: "{{ users }}"
+
+- name: Change sudoers
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers
+    line: "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL"
+    regexp: "%sudo   ALL=(ALL:ALL).*"
+
+- name: Add to sshd config
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^AllowUsers {{ item.name }}'
+    line: 'AllowUsers {{ item.name }}'
+    state: present
+  notify: ssh restart
+  with_items:
+    - "{{ users }}"

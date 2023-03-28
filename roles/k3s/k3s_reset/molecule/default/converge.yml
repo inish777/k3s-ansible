@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: "Include kts.k3s_reset"
+      ansible.builtin.include_role:
+        name: "kts.k3s_reset"
