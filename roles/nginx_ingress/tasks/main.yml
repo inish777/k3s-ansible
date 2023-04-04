@@ -1,5 +1,15 @@
 ---
 # tasks file for nginx_ingress
 - name: Add ingress-nginx repo
-  k8s.core.helm:
-  
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: "https://kubernetes.github.io/ingress-nginx"
+    repo_state: present
+
+- name: Install ingress-nginx controller
+  kubernetes.core.helm:
+    release_name: ingress-nginx
+    release_namespace: ingress-nginx
+    chart_ref: ingress-nginx/ingress-nginx
+    create_namespace: true
+   

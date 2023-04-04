@@ -1,9 +1,8 @@
 ---
 # defaults file for clickhouse
-
+clickhouse_image: "clickhouse/clickhouse-server:22.3"
 limits:
   memory: "512Mi"
   cpu: "500m"
 
-requests:
-  
+requests: {}

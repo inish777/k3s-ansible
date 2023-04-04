@@ -1,4 +1,18 @@
 ---
 # tasks file for cert_manager
 - name: Add cert-manager helm repo
-  kubernetes.core.
+  kubernetes.core.helm_repository:
+    repo_url: "{{ cert_manager_helm_repo }}"
+    repo_name: "jetstack"
+    repo_state: present
+
+- name: Install cert-manager
+  kubernetes.core.helm:
+    release_namespace: cert-manager
+    release_name: cert-manager
+    chart_ref: jetstack/cert-manager
+    state: present
+
+- name: Install cluster issuer
+  kubernetes.core.k8s:
+    template: clusterissuer.yaml

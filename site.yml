@@ -1,58 +1,70 @@
 ---
 - hosts: all
+  name: Gathering facts
+  gather_facts: true
+  tags:
+    - addons
+    - k3s-master
+
+- hosts: all
+  name: Setup users on all nodes
   gather_facts: true
   become: yes
   roles:
-  - users
+    - users
   tags:
-  - users
+    - users
 
 - hosts: k3s_cluster
+  name: K3s prerequisites install
   gather_facts: yes
   become: yes
   roles:
-    - role: k3s/k3s_prereq
-    - role: k3s/k3s_download
+    - role: kts.k3s.prereq
+    - role: kts.k3s.download
   tags:
-  - addons
+    - addons
 
 - hosts: master
   become: yes
+  name: K3s controlplane setup
   roles:
-    - role: k3s/k3s_master
+    - role: kts.k3s.master
   tags:
-  - addons
+    - addons
+    - k3s-master
 
 - hosts: node
+  name: K3s nodes setup
   become: yes
   roles:
-    - role: k3s/k3s_node
-  tags:
-  - addons
-
-- hosts: master
-  run_once: yes
-  name: Reconcile addons
-  tasks:
-  - name: Update apt cache
-    become: yes
-    apt:
-      update_cache: true
-      cache_valid_time: 3600
-  - name: Install python kubernetes library
-    become: yes
-    apt:
-      update_cache: true
-      cache_valid_time: 3600
-      name:
-        - python3-kubernetes
-      state: present
+    - role: kts.k3s.node
   tags:
     - addons
 
 - hosts: master
   run_once: yes
+  name: Reconcile addons
+  pre_tasks:
+    - name: Update apt cache
+      become: yes
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+    - name: Install python kubernetes library
+      become: yes
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+        name:
+          - python3-kubernetes
+        state: present
   roles:
-  - role: clickhouse
+    - role: clickhouse
+    - role: nginx_ingress
+    - role: cert_manager
+    - role: minio
+    - role: postgres
+    - role: rabbitmq
   tags:
-  - addons
+    - addons

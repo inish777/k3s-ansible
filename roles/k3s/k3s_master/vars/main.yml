@@ -1,1 +1,0 @@
-k3s_disabled_addons: "{{ k3s_addons | dict2items |  }}"

@@ -1,0 +1,18 @@
+---
+# tasks file for rabbitmq
+- name: Add bitnami repo
+  kubernetes.core.helm_repository:
+    name: bitnami
+    repo_url: "https://charts.bitnami.com/bitnami"
+    repo_state: present
+
+- name: Install rabbitmq-operator
+  kubernetes.core.helm:
+    release_name: rabbitmq-cluster-operator
+    release_namespace: default
+    chart_ref: bitnami/rabbitmq-cluster-operator
+    create_namespace: true
+
+- name: Install rabbitmq
+  kubernetes.core.k8s:
+    template: rabbitmq.yaml

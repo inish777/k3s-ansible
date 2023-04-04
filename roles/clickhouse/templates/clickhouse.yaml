@@ -1,0 +1,47 @@
+apiVersion: "clickhouse.altinity.com/v1"
+kind: "ClickHouseInstallation"
+metadata:
+  name: "{{ name }}"
+  namespace: "{{ namespace }}"
+spec:
+  defaults:
+    templates:
+      dataVolumeClaimTemplate: data-volume-template
+      serviceTemplate: svc-template
+      podTemplate: pod-template
+  configuration:
+    settings:
+      http_port: 8123
+      tcp_port: 9000
+      interserver_http_port: 9010
+    users:
+      default/access_management: "1"
+      clickhouse_operator/networks/ip:
+      - 10.112.0.0/16
+  templates:
+    podTemplates:
+      - name: pod-template
+        spec:
+          image: clickhouse/clickhouse-server:22.3
+          resources:
+            limits:
+                memory: "{{ limits.memory }}"
+                cpu: "{{ limits.cpu }}"
+    volumeClaimTemplates:
+      - name: data-volume-template
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+    serviceTemplates:
+      - name: svc-template
+        generateName: "{chi}"
+        spec:
+          ports:
+          - name: http
+            port: 8123
+          - name: tcp
+            port: 9000
+          type: ClusterIP

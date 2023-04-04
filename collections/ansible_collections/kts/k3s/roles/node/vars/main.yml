@@ -1,0 +1,11 @@
+---
+# vars file for k3s_node
+
+disabled_addons_args: >-
+ {{ k3s_addons | dict2items(key_name='addon_name', value_name='options') |
+ selectattr('options.enabled', '==', False) | map(attribute='addon_name') | join(',') }}
+
+node_options: >-
+  --server https://{{ master_ip }}:6443 --token {{ hostvars[groups['master'][0]]['token'] }}
+  
+  {{ extra_server_args | default("") }}

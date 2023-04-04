@@ -1,0 +1,9 @@
+---
+disabled_addons_args: >-
+ {{ k3s_addons | dict2items(key_name='addon_name', value_name='options') |
+ selectattr('options.enabled', '==', False) | map(attribute='addon_name') | join(',') }}
+
+master_options: >-
+  --data-dir {{ k3s_server_location }}
+  {% if disabled_addons_args %} --disable={{ disabled_addons_args | default("") }}{% endif %}
+  {{ extra_server_args | default("") }}
