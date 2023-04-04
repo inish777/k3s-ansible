@@ -1,4 +1,5 @@
 *
 !.gitignore
 !sample/
-!ranepa-dev-test/
+!ranepa-dev-test
+!ranepa-dev-test/**
