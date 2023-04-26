@@ -6,4 +6,6 @@ disabled_addons_args: >-
 master_options: >-
   --data-dir {{ k3s_server_location }}
   {% if disabled_addons_args %} --disable={{ disabled_addons_args | default("") }}{% endif %}
+  {% if k3s_node_external_ip %} --node-external-ip={{ k3s_node_external_ip }} {% endif %}
+  --tls-san={{ master_ip }} 
   {{ extra_server_args | default("") }}

@@ -6,3 +6,6 @@ limits:
   cpu: "500m"
 
 requests: {}
+
+clickhouse:
+  enabled: false

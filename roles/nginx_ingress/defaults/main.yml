@@ -1,2 +1,5 @@
 ---
 # defaults file for nginx_ingress
+
+nginx_ingress:
+  enabled: false

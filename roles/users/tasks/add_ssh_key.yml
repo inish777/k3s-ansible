@@ -1,0 +1,12 @@
+---
+- name: Check if user has key
+  register:
+    user_key: "{{ lookup('file', '{{ keys_path }}/{{ item.name }}.pub') }}"
+    
+- name: Add user key
+  ansible.posix.authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ lookup('file', '{{ keys_path }}/{{ item.name }}.pub') }}"
+    path: "/home/{{ item.name }}/.ssh/authorized_keys"
+  when: user_key

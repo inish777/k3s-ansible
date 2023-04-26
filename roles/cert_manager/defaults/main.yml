@@ -2,3 +2,6 @@
 # defaults file for cert_manager
 
 cert_manager_helm_repo: "https://charts.jetstack.io"
+
+cert_manager:
+  enabled: false

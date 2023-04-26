@@ -58,6 +58,8 @@
     owner: "{{ ansible_user }}"
     mode: "u=rw,g=,o="
 
+
+
 - name: Replace https://localhost:6443 by https://master-ip:6443
   ansible.builtin.command: >-
     k3s kubectl config set-cluster default

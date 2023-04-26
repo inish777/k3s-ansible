@@ -1,0 +1,28 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: postgres
+spec:
+  teamId: "dba"
+  volume:
+    size: 20Gi
+  numberOfInstances: 1
+  users:
+    postgres:  # database owner
+    - superuser
+    - createdb
+  preparedDatabases:
+    ranepa_hydra:
+      defaultUsers: true
+    ranepa_kratos:
+      defaultUsers: true
+    scor_dev:
+      defaultUsers: true
+    scor_test:
+      defaultUsers: true
+    simulator_dashboard_dev:
+      defaultUsers: true
+    sumulator_dashboard_test:
+      defaultUsers: true
+  postgresql:
+    version: "15"

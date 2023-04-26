@@ -1,4 +1,4 @@
-# 
+---
 
 - name: User add
   ansible.builtin.user:
@@ -8,11 +8,14 @@
   with_items: "{{ users }}"
 
 - name: Add key
+  vars:
+    user_key: "{{ lookup('file', '{{ keys_path }}/{{ item.name }}.pub', errors='ignore') | default('') }}"
   ansible.posix.authorized_key:
     user: "{{ item.name }}"
     state: present
     key: "{{ lookup('file', '{{ keys_path }}/{{ item.name }}.pub') }}"
     path: "/home/{{ item.name }}/.ssh/authorized_keys"
+  when: user_key
   with_items: "{{ users }}"
 
 - name: Change sudoers

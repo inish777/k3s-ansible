@@ -1,2 +1,5 @@
 ---
 # defaults file for postgres
+
+postgres:
+  enabled: false

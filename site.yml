@@ -5,6 +5,7 @@
   tags:
     - addons
     - k3s-master
+    - k3s-bare-only
 
 - hosts: all
   name: Setup users on all nodes
@@ -14,6 +15,7 @@
     - users
   tags:
     - users
+    - k3s-bare-only
 
 - hosts: k3s_cluster
   name: K3s prerequisites install
@@ -24,6 +26,7 @@
     - role: kts.k3s.download
   tags:
     - addons
+    - k3s-bare-only
 
 - hosts: master
   become: yes
@@ -33,6 +36,7 @@
   tags:
     - addons
     - k3s-master
+    - k3s-bare-only
 
 - hosts: node
   name: K3s nodes setup
@@ -41,6 +45,7 @@
     - role: kts.k3s.node
   tags:
     - addons
+    - k3s-bare-only
 
 - hosts: master
   run_once: yes
@@ -61,10 +66,16 @@
         state: present
   roles:
     - role: clickhouse
+      when: clickhouse.enabled 
     - role: nginx_ingress
+      when: nginx_ingress.enabled
     - role: cert_manager
+      when: cert_manager.enabled
     - role: minio
+      when: minio.enabled 
     - role: postgres
+      when: postgres.enabled
     - role: rabbitmq
+      when: rabbitmq.enabled
   tags:
     - addons
