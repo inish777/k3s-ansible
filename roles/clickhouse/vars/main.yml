@@ -1,8 +1,2 @@
 ---
 # vars file for clickhouse
-
-#k3s_disabled_addons: "{{ k3s_addons | dict2items(key_name='addon_name', value_name='options') | selectattr('options.enabled') }}"
-disabled_addons_args: >-
-  {%- if k3s_disabled_addons -%}
-  --disable={{ k3s_diabled_addons }} {{ extra_server_args }}
-  {%- endif -%}
