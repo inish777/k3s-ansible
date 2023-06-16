@@ -3,3 +3,6 @@
 !sample/
 !ranepa-dev-test
 !ranepa-dev-test/**
+!coperniq
+!coperniq/**
+

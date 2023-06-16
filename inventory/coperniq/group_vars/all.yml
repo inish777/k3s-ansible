@@ -1,0 +1,22 @@
+---
+k3s_version: v1.25.6+k3s1
+systemd_dir: /etc/systemd/system
+master_ip: "{{ hostvars[groups['master'][0]]['ansible_host'] | default(groups['master'][0]) }}"
+
+k3s_addons:
+  traefik:
+    enabled: false
+
+extra_server_args: ""
+extra_agent_args: ""
+cert_manager:
+  enabled: true
+
+users:
+  - name: smalenko
+    state: present
+  - name: ainishev
+    state: present
+  - name: ubuntu
+    state: present
+

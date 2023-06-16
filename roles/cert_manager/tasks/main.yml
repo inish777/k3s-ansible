@@ -12,10 +12,12 @@
     release_name: cert-manager
     chart_ref: jetstack/cert-manager
     values:
+      installCRDs: true
       ingressShim:
         defaultIssuerKind: ClusterIssuer
         defaultIssuerName: letsencrypt
         defaultIssuerGroup: cert-manager.io
+    create_namespace: yes
     state: present
 
 - name: Install cluster issuer

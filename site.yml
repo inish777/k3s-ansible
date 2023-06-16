@@ -25,7 +25,6 @@
     - role: kts.k3s.prereq
     - role: kts.k3s.download
   tags:
-    - addons
     - k3s-bare-only
 
 - hosts: master
@@ -34,7 +33,6 @@
   roles:
     - role: kts.k3s.master
   tags:
-    - addons
     - k3s-master
     - k3s-bare-only
 
@@ -44,26 +42,25 @@
   roles:
     - role: kts.k3s.node
   tags:
-    - addons
     - k3s-bare-only
 
-- hosts: master
+- hosts: localhost
   run_once: yes
   name: Reconcile addons
-  pre_tasks:
-    - name: Update apt cache
-      become: yes
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 3600
-    - name: Install python kubernetes library
-      become: yes
-      ansible.builtin.apt:
-        update_cache: true
-        cache_valid_time: 3600
-        name:
-          - python3-kubernetes
-        state: present
+  # pre_tasks:
+  #   - name: Update apt cache
+  #     become: yes
+  #     ansible.builtin.apt:
+  #       update_cache: true
+  #       cache_valid_time: 3600
+  #   - name: Install python kubernetes library
+  #     become: yes
+  #     ansible.builtin.apt:
+  #       update_cache: true
+  #       cache_valid_time: 3600
+  #       name:
+  #         - python3-kubernetes
+  #       state: present
   roles:
     - role: clickhouse
       when: clickhouse.enabled 
